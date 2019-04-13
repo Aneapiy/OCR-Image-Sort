@@ -3,22 +3,47 @@
 ## Abstract
 
 ## Progress
+- [x] Load and read text off of one image using tesseract.
+- [x] Loop through all images in a directory and identify key photos on simple data.
+- [x] Create folders based on key photo text and move photos.
+- [x] Celebrate by watching Game of Thrones if everything works on simple data.
+- [ ] Text recognition using OpenCV.
+- [ ] Refine key photo identification based on text recognition and heuristics
+- [ ] Image cropping and passing to Tesseract.
+- [ ] Tesseract error handling and key photo likelihood.
+- [ ] Evaluate algorithm on full complex image dataset.
+- [ ] Speed up text recognition using TensorFlow
+- [ ] Build a GUI interface
 
 ## OCR-Image-Sort Overview
-The proposed system will process a sequential set of equipment images and identify key photos. A key photo is a photo that contains the tag or nameplate of an equipment and is the first photo in a photo set of that equipment. In the above example, key photos are p_1^1,p_1^2,and p_1^3. The system will be built to run on a personal desktop or laptop computer, but not on a mobile platform such as a phone or camera. The system will label all the photos associated with the key photo with the appropriate tag and sequence up to the next key photo (see figure 1 below).
-The system will be based on three main technologies: Python3, OpenCV [1], and Tesseract [2]. Python3 will be the general wrapper for all system components and will sort and label the photos. OpenCV will be used to identify areas in each photo that contain text. Tesseract will be used to transcribe the text in each area identified by OpenCV [3]. Python3 will evaluate the likelihood that the photo is a key photo. 
+The proposed system will process a sequential set of equipment images and identify key photos. 
+A key photo is a photo that contains the tag or nameplate of an equipment and is the first photo in a photo set of that equipment. 
+In the above example, key photos are p_1^1,p_1^2,and p_1^3. 
+The system will be built to run on a personal desktop or laptop computer, but not on a mobile platform such as a phone or camera. 
+The system will label all the photos associated with the key photo with the appropriate tag and sequence up to the next key photo (see figure 1 below).
+
+The system will be based on three main technologies: Python3, OpenCV [1], and Tesseract [2]. 
+Python3 will be the general wrapper for all system components and will sort and label the photos. 
+OpenCV will be used to identify areas in each photo that contain text. 
+Tesseract will be used to transcribe the text in each area identified by OpenCV [3]. 
+Python3 will evaluate the likelihood that the photo is a key photo. 
 
 ## Notes
 
-### Main APIs:
+### Main APIs and Software Packages:
 1. https://github.com/opencv/opencv
 2. https://github.com/tesseract-ocr/tesseract
 3. https://github.com/madmaze/pytesseract
+4. Python 3.6.2 |Anaconda custom (64-bit)| via https://www.anaconda.com/
+5. Spyder IDE: https://www.spyder-ide.org/
+6. EAST Text Detection model: https://www.dropbox.com/s/r2ingd0l3zt8hxs/frozen_east_text_detection.tar.gz?dl=1
+7. https://github.com/argman/EAST
 
 ### References:
 1. V. Singh Chandel and S. Mallick, "Deep Learning based Text Recognition (OCR) using Tesseract and OpenCV," ed. https://www.learnopencv.com/deep-learning-based-text-recognition-ocr-using-tesseract-and-opencv/
 2. V. Singh Chandel and S. Mallick, "Deep Learning based Text Detection Using OpenCV," ed. https://www.learnopencv.com/deep-learning-based-text-detection-using-opencv-c-python/
 3. R. Smith, "An Overview of the Tesseract OCR Engine," presented at the Proceedings of the Ninth International Conference on Document Analysis and Recognition - Volume 02, 2007.
+4. X. Zhou et al., "EAST: an efficient and accurate scene text detector," in Proceedings of the IEEE conference on Computer Vision and Pattern Recognition, 2017, pp. 5551-5560.
 
 ### Other threads consulted:
 1. The OpenCV Library. (2000). Accessed: February 28, 2019. [Online]. Available: https://opencv.org/
@@ -28,3 +53,5 @@ The system will be based on three main technologies: Python3, OpenCV [1], and Te
 5. A. Paszke et al., "Automatic differentiation in pytorch," 2017.
 6. https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_gui/py_image_display/py_image_display.html
 7. https://stackoverflow.com/questions/273192/how-can-i-safely-create-a-nested-directory-in-python
+8. https://github.com/argman/EAST
+9. https://www.pyimagesearch.com/2018/08/20/opencv-text-detection-east-text-detector/
