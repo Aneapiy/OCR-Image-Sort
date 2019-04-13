@@ -17,6 +17,7 @@ class ImageSort:
         
     def readImage(self, imgPath):        
         #read an image with OpenCV
+        #this function is based on reference [1]
         img=cv2.imread(imgPath) #default color image
         
         #config parameters for pytesseract
@@ -67,20 +68,34 @@ class ImageSort:
                 imgToFolder.append(imgToFolder[i-1])
         return imgToFolder
     
-    def sortImages(self,imgToFolder):
+    def sortImages(self,imgToFolder,fileNames):
         #takes the folder map and moves the images to that folder
         #the folder map and the file name list must be in the same order
+        for i in range(len(imgToFolder)):
+            source_file=self.folderPath+'/'+fileNames[i]
+            destination_file=imgToFolder[i]+'/'+fileNames[i]
+            os.rename(source_file,destination_file)
         return
     
+    def unsortImages(self,imgToFolder,fileNames):
+        #moves all images back to the unsorted folder
+        for i in range(len(imgToFolder)):
+            source_file=self.folderPath+'/'+fileNames[i]
+            destination_file=imgToFolder[i]+'/'+fileNames[i]
+            os.rename(destination_file,source_file)
+        return
+        
 #test script
 testImagePath1='./unsorted/image1.png'
 testImagePath2='./unsorted/image2.jpg'
 iSort=ImageSort()
 start=time.time()
-imgNames=iSort.getFileNames()
+fileNames=iSort.getFileNames()
 imgText=iSort.readAllUnsorted()
 iSort.makeFolders(imgText)
 imgToFolder=iSort.folderMap(imgText)
+iSort.sortImages(imgToFolder,fileNames)
+#iSort.unsortImages(imgToFolder,fileNames)
 end=time.time()
 print(imgText)
 print('Execution time (s): ' + str(end-start))

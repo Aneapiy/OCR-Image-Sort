@@ -27,3 +27,4 @@ The system will be based on three main technologies: Python3, OpenCV [1], and Te
 4. Caffe: Convolutional Architecture for Fast Feature Embedding. (2014). [Online]. Available: http://caffe.berkeleyvision.org/
 5. A. Paszke et al., "Automatic differentiation in pytorch," 2017.
 6. https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_gui/py_image_display/py_image_display.html
+7. https://stackoverflow.com/questions/273192/how-can-i-safely-create-a-nested-directory-in-python
