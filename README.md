@@ -31,13 +31,13 @@ Python3 will evaluate the likelihood that the photo is a key photo.
 ## Notes
 
 ### Package Installation
-'''
+```
 conda install pip
 pip install tesseract
 pip install pytesseract
 pip install opencv-contrib-python
 conda install tensorflow-gpu
-'''
+```
 
 ### Main APIs and Software Packages:
 1. https://github.com/opencv/opencv
