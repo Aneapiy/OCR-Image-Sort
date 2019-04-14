@@ -7,10 +7,10 @@
 - [x] Loop through all images in a directory and identify key photos on simple data.
 - [x] Create folders based on key photo text and move photos.
 - [x] Celebrate by watching Game of Thrones if everything works on simple data.
-- [ ] Text recognition using OpenCV.
-- [ ] Refine key photo identification based on text recognition and heuristics
-- [ ] Image cropping and passing to Tesseract.
-- [ ] Tesseract error handling and key photo likelihood.
+- [x] Text recognition using OpenCV.
+- [x] Image cropping and passing to Tesseract.
+- [ ] Tesseract error handling.
+- [ ] Refine key photo identification and key photo likelihood.
 - [ ] Evaluate algorithm on full complex image dataset.
 - [ ] Speed up text recognition using TensorFlow
 - [ ] Build a GUI interface
@@ -50,9 +50,10 @@ conda install tensorflow-gpu
 
 ### References:
 1. V. Singh Chandel and S. Mallick, "Deep Learning based Text Recognition (OCR) using Tesseract and OpenCV," ed. https://www.learnopencv.com/deep-learning-based-text-recognition-ocr-using-tesseract-and-opencv/
-2. V. Singh Chandel and S. Mallick, "Deep Learning based Text Detection Using OpenCV," ed. https://www.learnopencv.com/deep-learning-based-text-detection-using-opencv-c-python/
-3. R. Smith, "An Overview of the Tesseract OCR Engine," presented at the Proceedings of the Ninth International Conference on Document Analysis and Recognition - Volume 02, 2007.
-4. X. Zhou et al., "EAST: an efficient and accurate scene text detector," in Proceedings of the IEEE conference on Computer Vision and Pattern Recognition, 2017, pp. 5551-5560.
+2. V. Shrimali and S. Mallick, "Deep Learning based Text Detection Using OpenCV," ed. https://www.learnopencv.com/deep-learning-based-text-detection-using-opencv-c-python/
+3. https://www.pyimagesearch.com/2018/09/17/opencv-ocr-and-text-recognition-with-tesseract/
+4. R. Smith, "An Overview of the Tesseract OCR Engine," presented at the Proceedings of the Ninth International Conference on Document Analysis and Recognition - Volume 02, 2007.
+5. X. Zhou et al., "EAST: an efficient and accurate scene text detector," in Proceedings of the IEEE conference on Computer Vision and Pattern Recognition, 2017, pp. 5551-5560.
 
 ### Other threads consulted:
 1. The OpenCV Library. (2000). Accessed: February 28, 2019. [Online]. Available: https://opencv.org/
