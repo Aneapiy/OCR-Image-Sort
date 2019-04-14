@@ -200,6 +200,12 @@ class ImageSort:
         for i in range(len(fileNames)):
             imgPath=self.folderPath+'/'+fileNames[i]
             croppedImages=self.textDetection(imgPath)
+            
+            #If there's too many text regions, this might be a
+            #non-key photo with mulitple text regions
+            if len(croppedImages)>4:
+                continue
+            
             croppedText=[]
             for j in range(len(croppedImages)):
                 #config parameters for pytesseract
