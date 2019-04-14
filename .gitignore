@@ -9,6 +9,9 @@ __pycache__/
 #test image folders
 sorted/
 unsorted/
+mediumDataset/
+fullDataset/
+smallTestImages/not_used/
 
 # Distribution / packaging
 .Python

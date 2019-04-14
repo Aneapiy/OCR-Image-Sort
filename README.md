@@ -9,11 +9,12 @@
 - [x] Celebrate by watching Game of Thrones if everything works on simple data.
 - [x] Text recognition using OpenCV.
 - [x] Image cropping and passing to Tesseract.
-- [ ] Tesseract error handling.
-- [ ] Refine key photo identification and key photo likelihood.
+- [x] Tesseract error handling.
+- [ ] Evaluate algo on medium sized dataset and adjust parameters
 - [ ] Evaluate algorithm on full complex image dataset.
-- [ ] Speed up text recognition using TensorFlow
-- [ ] Build a GUI interface
+- [ ] Refine key photo identification and key photo likelihood.
+- [ ] Build a GUI interface.
+- [ ] Speed up text recognition using TensorFlow.
 
 ## OCR-Image-Sort Overview
 The proposed system will process a sequential set of equipment images and identify key photos. 

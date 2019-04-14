@@ -188,9 +188,9 @@ class ImageSort:
             cv2.rectangle(origImg,(startX,startY),(endX,endY),(0,255,0),2)
             croppedTextBox=origImg[startY:endY,startX:endX]
             croppedImages.append(croppedTextBox)
-            cv2.imshow('cropped',croppedTextBox)
-        cv2.imshow('Text Recognition',origImg)
-        print(boxes)
+            #cv2.imshow('cropped',croppedTextBox)
+        #cv2.imshow('Text Recognition',origImg)
+        #print(boxes)
         return croppedImages
     
     def textDetectAndRecogAll(self):
@@ -210,7 +210,12 @@ class ImageSort:
                 #Run Tesseract OCR
                 text=pytesseract.image_to_string(croppedImages[j], config=config)
                 croppedText.append(text)
-            imgText.append(croppedText)
+            #pick the longest string found in the key image
+            if len(croppedText)>0:
+                imgText.append(max(croppedText,key=len))
+            else:
+                imgText.append('')
+        #print(imgText)
         return imgText
     
     def runTextRecogOnly(self):
@@ -236,12 +241,13 @@ class ImageSort:
         print(imgText)
         print('Execution time (s): ' + str(end-start))
         return
+    
 #test script
 testImagePath1='./unsorted/image1.png'
 testImagePath2='./unsorted/image2.jpg'
 iSort=ImageSort()
-start=time.time()
-iSort.runTextRecogOnly()
+#iSort.runTextRecogOnly()
+#iSort.runTextDetectAndRecog()
 #iSort.unsortImages(imgToFolder,fileNames)
 '''
 imText=iSort.readImage(testImagePath2)
