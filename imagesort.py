@@ -185,11 +185,17 @@ class ImageSort:
             endX=min(int(endX*rW)+padX,origW)
             endY=min(int(endY*rH)+padY,origH)
             
-            cv2.rectangle(origImg,(startX,startY),(endX,endY),(0,255,0),2)
+            cv2.rectangle(origImg,(startX,startY),(endX,endY),(0,255,0),8)
             croppedTextBox=origImg[startY:endY,startX:endX]
             croppedImages.append(croppedTextBox)
             #cv2.imshow('cropped',croppedTextBox)
-        #cv2.imshow('Text Recognition',origImg)
+        
+        #Uncomment the 4 commands below to show the image with text detection boxes
+        cv2.namedWindow('Text Recognition',cv2.WINDOW_NORMAL)
+        cv2.imshow('Text Recognition',origImg)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        
         #print(boxes)
         return croppedImages
     
@@ -249,8 +255,8 @@ class ImageSort:
         return
     
 #test script
-testImagePath1='./unsorted/image1.png'
-testImagePath2='./unsorted/image2.jpg'
+testImagePath1='./unsorted/IMG_2141.JPG'
+testImagePath2='./unsorted/IMG_8412.JPG'
 iSort=ImageSort()
 #iSort.runTextRecogOnly()
 #iSort.runTextDetectAndRecog()
