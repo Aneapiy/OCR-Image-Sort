@@ -32,11 +32,16 @@ Python3 will evaluate the likelihood that the photo is a key photo.
 ## Notes
 
 ### Package Installation
+1. Install tesseract for windows from https://github.com/UB-Mannheim/tesseract/wiki
+2. Add tesseract to PATH variable for windows (https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/)
+3. Install latest version of anaconda
+4. Open Anaconda Prompt and install the following packages
 ```
 conda install pip
 pip install tesseract
 pip install pytesseract
 pip install opencv-contrib-python
+pip install imutils
 conda install tensorflow-gpu
 ```
 

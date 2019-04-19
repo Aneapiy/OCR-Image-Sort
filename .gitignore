@@ -12,6 +12,7 @@ unsorted/
 mediumDataset/
 fullDataset/
 smallTestImages/not_used/
+demoDataset/
 
 # Distribution / packaging
 .Python

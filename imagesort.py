@@ -116,7 +116,7 @@ class ImageSort:
             anglesData = geometry[0, 4, y]
     
     		# loop over the number of columns
-            min_confidence=0.5
+            min_confidence=0.6
             for x in range(0, numCols):
     			# if our score does not have sufficient probability,
     			# ignore it
@@ -160,7 +160,7 @@ class ImageSort:
         #resize image for EAST model. 
         #EAST requires width and height to be multiple of 32
         (origH, origW)=img.shape[:2]
-        (newW, newH)=(320, 320)
+        (newW, newH)=(320,320)
         #ratio of scaled image to original image
         rW=origW/float(newW)
         rH=origH/float(newH)
@@ -188,14 +188,21 @@ class ImageSort:
             cv2.rectangle(origImg,(startX,startY),(endX,endY),(0,255,0),8)
             croppedTextBox=origImg[startY:endY,startX:endX]
             croppedImages.append(croppedTextBox)
-            #cv2.imshow('cropped',croppedTextBox)
-        
+            
+            #Uncomment the 4 commands below to show the image with text detection boxes
+            '''
+            cv2.namedWindow('cropped',cv2.WINDOW_NORMAL)
+            cv2.imshow('cropped',croppedTextBox)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+            '''
         #Uncomment the 4 commands below to show the image with text detection boxes
+        '''
         cv2.namedWindow('Text Recognition',cv2.WINDOW_NORMAL)
         cv2.imshow('Text Recognition',origImg)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
-        
+        '''
         #print(boxes)
         return croppedImages
     
@@ -221,7 +228,10 @@ class ImageSort:
                 config=('-l eng --oem 1 --psm 7')
                 #Run Tesseract OCR
                 text=pytesseract.image_to_string(croppedImages[j], config=config)
-                croppedText.append(text)
+                text=''.join(filter(str.isalnum,text))
+                #Tags are generally longer than 3 characters
+                if len(text)>3:    
+                    croppedText.append(text)
             #pick the longest string found in the key image
             if len(croppedText)>0:
                 imgText.append(max(croppedText,key=len))
@@ -255,8 +265,8 @@ class ImageSort:
         return
     
 #test script
-testImagePath1='./unsorted/IMG_2141.JPG'
-testImagePath2='./unsorted/IMG_8412.JPG'
+testImagePath1='./unsorted/IMG_5662.JPG'
+testImagePath2='./unsorted/IMG_5678.JPG'
 iSort=ImageSort()
 #iSort.runTextRecogOnly()
 #iSort.runTextDetectAndRecog()
