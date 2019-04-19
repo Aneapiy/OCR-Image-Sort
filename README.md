@@ -95,6 +95,7 @@ The prototype was tested on a personal computer with the following specification
 - OS Drive: Samsung SSD 850 EVO
 - Program Drive: Toshiba SSD OCZ Trion 150 
 - Motherboard: MSI Z97 Gaming 5
+
 During the test, the computer was air cooled and not overclocked. The ambient temperature of the testing room was approximately 70-72°F.
 
 ### Possible Applications
