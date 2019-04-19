@@ -34,7 +34,7 @@ After OpenCV identifies the text regions, Tesseract does the text recognition an
 ## Package Installation
 1. Install tesseract for windows from https://github.com/UB-Mannheim/tesseract/wiki
 2. Add tesseract to PATH variable for windows (https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/)
-3. Install latest version of anaconda
+3. Install the latest version of Anaconda
 4. Open Anaconda Prompt and install the following packages
 ```
 conda install pip
