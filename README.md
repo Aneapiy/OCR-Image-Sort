@@ -47,7 +47,9 @@ conda install tensorflow-gpu
 
 ## Code Execution Instructions
 
-Make sure the folder paths for the unsorted and sorted folders point to the correct location. Check that the location of the EAST model is correct.
+Make sure the folder paths for the unsorted and sorted folders point to the correct location. 
+Put all images in the ./unsorted/ folder.
+Check that the location of the EAST model is correct.
 Initialize the class with
 > iSort=ImageSort()
 
@@ -56,6 +58,8 @@ To run the code with text detection + OCR (recommended), run the following comma
 
 To run the code with OCR only (not recommended), run the following command in the Python terminal after initializing the class:
 > iSort.runTextRecogOnly()
+
+All the images should end up in the ./sorted/ folder under subfolders named after descriptors from key images.
 
 ## Notes
 
