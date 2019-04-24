@@ -176,14 +176,14 @@ class ImageSort:
         croppedImages=[]
         for (startX, startY, endX, endY) in boxes:
             #add padding to the bounding boxes, so we don't clip letters/nums
-            padding=0.2
+            padding=0.8
             padX=int((endX-startX)*padding)
             padY=int((endY-startY)*padding)
             
             startX=max(int(startX*rW)-padX,0)
             startY=max(int(startY*rH)-padY,0)
             endX=min(int(endX*rW)+padX,origW)
-            endY=min(int(endY*rH)+padY,origH)
+            endY=min(int(endY*rH)+3*padY,origH)
             
             cv2.rectangle(origImg,(startX,startY),(endX,endY),(0,255,0),8)
             croppedTextBox=origImg[startY:endY,startX:endX]
@@ -197,12 +197,12 @@ class ImageSort:
             cv2.destroyAllWindows()
             '''
         #Uncomment the 4 commands below to show the image with text detection boxes
-        '''
+        
         cv2.namedWindow('Text Recognition',cv2.WINDOW_NORMAL)
         cv2.imshow('Text Recognition',origImg)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
-        '''
+        
         #print(boxes)
         return croppedImages
     
