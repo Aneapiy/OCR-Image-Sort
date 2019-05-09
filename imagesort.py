@@ -199,20 +199,23 @@ class ImageSort:
             cv2.destroyAllWindows()
             '''
         #Uncomment the 4 commands below to show the image with text detection boxes
-        
+        '''
         cv2.namedWindow('Text Recognition',cv2.WINDOW_NORMAL)
         cv2.imshow('Text Recognition',origImg)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
-        
+        '''
         #print(boxes)
         return croppedImages
     
-    def textDetectAndRecogAll(self):
+    def textDetectAndRecogAll(self, clusterAssign):
         #reads all image text in the unsorted folder
         fileNames=self.getFileNames()
         imgText=[]
         for i in range(len(fileNames)):
+            if clusterAssign[i]==1:
+                imgText.append('')
+                continue
             imgPath=self.folderPath+'/'+fileNames[i]
             croppedImages=self.textDetection(imgPath)
             
@@ -253,7 +256,7 @@ class ImageSort:
             histoAll[i]=hist.reshape(histBins)
             #plt.subplot(121), plt.imshow(img,'gray')
             #plt.subplot(122), plt.plot(hist)
-            plt.plot(hist)
+            #plt.plot(hist)
             '''
             plt.hist(img.ravel(),256,[0,256])
             plt.show()
@@ -287,7 +290,9 @@ class ImageSort:
     def runTextDetectAndRecog(self):
         start=time.time()
         fileNames=self.getFileNames()
-        imgText=self.textDetectAndRecogAll()
+        histoAll=self.getHisto()
+        clusterAssign=self.findKeyPhotos(histoAll)
+        imgText=self.textDetectAndRecogAll(clusterAssign)
         self.makeFolders(imgText)
         imgToFolder=self.folderMap(imgText)
         self.sortImages(imgToFolder,fileNames)
