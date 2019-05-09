@@ -13,6 +13,8 @@ mediumDataset/
 fullDataset/
 smallTestImages/not_used/
 demoDataset/
+input/
+output/
 
 # Distribution / packaging
 .Python

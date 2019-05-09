@@ -134,3 +134,5 @@ Travelers could use this system to sort photos of cities, towns, and tourist att
 7. https://stackoverflow.com/questions/273192/how-can-i-safely-create-a-nested-directory-in-python
 8. https://github.com/argman/EAST
 9. https://www.pyimagesearch.com/2018/08/20/opencv-text-detection-east-text-detector/
+10. https://docs.opencv.org/3.1.0/d1/db7/tutorial_py_histogram_begins.html
+11. https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans

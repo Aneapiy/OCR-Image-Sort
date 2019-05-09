@@ -10,11 +10,13 @@ import pytesseract
 import os
 import time
 from imutils.object_detection import non_max_suppression
+from matplotlib import pyplot as plt
+from sklearn.cluster import KMeans
 
 class ImageSort:
     def __init__(self):
-        self.folderPath='./unsorted'
-        self.sortedPath='./sorted'
+        self.folderPath='./input'
+        self.sortedPath='./output'
         self.eastPath='./frozen_east_text_detection.pb'
         self.net=cv2.dnn.readNet(self.eastPath)
         
@@ -240,6 +242,36 @@ class ImageSort:
         #print(imgText)
         return imgText
     
+    def getHisto(self):
+        histBins=20
+        fileNames=self.getFileNames()
+        histoAll=np.zeros((len(fileNames),histBins))
+        for i in range(len(fileNames)):
+            imgPath=self.folderPath+'/'+fileNames[i]
+            img=cv2.imread(imgPath,0)
+            hist=cv2.calcHist([img],[0],None,[histBins],[0,256])
+            histoAll[i]=hist.reshape(histBins)
+            #plt.subplot(121), plt.imshow(img,'gray')
+            #plt.subplot(122), plt.plot(hist)
+            plt.plot(hist)
+            '''
+            plt.hist(img.ravel(),256,[0,256])
+            plt.show()
+            '''
+            #Uncomment the 4 commands below to show the image with text detection boxes
+            '''
+            cv2.namedWindow('Grayscale',cv2.WINDOW_NORMAL)
+            cv2.imshow('Grayscale',img)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+            '''
+        return histoAll
+    
+    def findKeyPhotos(self, histo):
+        kmeans=KMeans(n_clusters=2,random_state=0).fit(histo)
+        clusterAssign=kmeans.labels_
+        return clusterAssign
+    
     def runTextRecogOnly(self):
         start=time.time()
         fileNames=self.getFileNames()
@@ -268,6 +300,9 @@ class ImageSort:
 testImagePath1='./unsorted/IMG_5662.JPG'
 testImagePath2='./unsorted/IMG_5678.JPG'
 iSort=ImageSort()
+#Histogram stuff
+#histTest=iSort.getHisto()
+#clustersAssign=iSort.findKeyPhotos(histTest)
 #iSort.runTextRecogOnly()
 #iSort.runTextDetectAndRecog()
 #iSort.unsortImages(imgToFolder,fileNames)
