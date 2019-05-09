@@ -212,8 +212,10 @@ class ImageSort:
         #reads all image text in the unsorted folder
         fileNames=self.getFileNames()
         imgText=[]
+        cnt=np.unique(clusterAssign, return_counts=True)
+        keyPhotoNum=cnt[0][np.argmin(cnt[1])]
         for i in range(len(fileNames)):
-            if clusterAssign[i]==1:
+            if clusterAssign[i]!=keyPhotoNum:
                 imgText.append('')
                 continue
             imgPath=self.folderPath+'/'+fileNames[i]
@@ -313,6 +315,17 @@ iSort=ImageSort()
 #iSort.runTextRecogOnly()
 #output=iSort.runTextDetectAndRecog()
 #iSort.unsortImages(imgToFolder,fileNames)
+'''
+start=time.time()
+fileNames=iSort.getFileNames()
+histoAll=iSort.getHisto()
+clusterAssign=iSort.findKeyPhotos(histoAll)
+imgText=iSort.textDetectAndRecogAll(clusterAssign)
+iSort.makeFolders(imgText)
+imgToFolder=iSort.folderMap(imgText)
+iSort.sortImages(imgToFolder,fileNames)
+end=time.time()
+'''
 '''
 imText=iSort.readImage(testImagePath2)
 print(imText)
