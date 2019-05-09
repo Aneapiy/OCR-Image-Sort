@@ -254,8 +254,10 @@ class ImageSort:
             img=cv2.imread(imgPath,0)
             hist=cv2.calcHist([img],[0],None,[histBins],[0,256])
             histoAll[i]=hist.reshape(histBins)
+            #Histogram with image
             #plt.subplot(121), plt.imshow(img,'gray')
             #plt.subplot(122), plt.plot(hist)
+            #Histogram only
             #plt.plot(hist)
             '''
             plt.hist(img.ravel(),256,[0,256])
@@ -309,7 +311,7 @@ iSort=ImageSort()
 #histTest=iSort.getHisto()
 #clustersAssign=iSort.findKeyPhotos(histTest)
 #iSort.runTextRecogOnly()
-#iSort.runTextDetectAndRecog()
+#output=iSort.runTextDetectAndRecog()
 #iSort.unsortImages(imgToFolder,fileNames)
 '''
 imText=iSort.readImage(testImagePath2)
