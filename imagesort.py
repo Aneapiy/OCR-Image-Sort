@@ -224,9 +224,10 @@ class ImageSort:
             
             #If there's too many text regions, this might be a
             #non-key photo with mulitple text regions
+            '''
             if len(croppedImages)>4:
                 continue
-            
+            '''
             croppedText=[]
             for j in range(len(croppedImages)):
                 #config parameters for pytesseract
@@ -318,14 +319,21 @@ iSort.runDefault()
 iSort=ImageSort()
 start=time.time()
 fileNames=iSort.getFileNames()
+print('Gathering histogram data...')
 histoAll=iSort.getHisto()
+print('Histogram Extraction Complete')
+print('Clustering...')
 clusterAssign=iSort.findKeyPhotos(histoAll)
+print('K-Means Clustering Complete')
+print('Begin text detection and OCR...')
 imgText=iSort.textDetectAndRecogAll(clusterAssign)
+print('Sorting Complete')
 iSort.makeFolders(imgText)
 imgToFolder=iSort.folderMap(imgText)
 iSort.sortImages(imgToFolder,fileNames)
 end=time.time()
 execTime=end-start
+print('OCR Image Sort Complete')
 print('Execution time (s): ' + str(end-start))
 
 #Histogram stuff
