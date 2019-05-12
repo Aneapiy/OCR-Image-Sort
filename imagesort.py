@@ -212,6 +212,7 @@ class ImageSort:
         #reads all image text in the unsorted folder
         fileNames=self.getFileNames()
         imgText=[]
+        #Assume that there are less key photos than non-key photos
         cnt=np.unique(clusterAssign, return_counts=True)
         keyPhotoNum=cnt[0][np.argmin(cnt[1])]
         for i in range(len(fileNames)):
@@ -275,6 +276,7 @@ class ImageSort:
         return histoAll
     
     def findKeyPhotos(self, histo):
+        #Use k-means clustering to group key photos together
         kmeans=KMeans(n_clusters=2,random_state=0).fit(histo)
         clusterAssign=kmeans.labels_
         return clusterAssign
@@ -291,7 +293,7 @@ class ImageSort:
         print('Execution time (s): ' + str(end-start))
         return
     
-    def runTextDetectAndRecog(self):
+    def runDefault(self):
         start=time.time()
         fileNames=self.getFileNames()
         histoAll=self.getHisto()
@@ -301,21 +303,19 @@ class ImageSort:
         imgToFolder=self.folderMap(imgText)
         self.sortImages(imgToFolder,fileNames)
         end=time.time()
-        print(imgText)
+        #print(imgText)
         print('Execution time (s): ' + str(end-start))
         return
-    
-#test script
-testImagePath1='./unsorted/IMG_5662.JPG'
-testImagePath2='./unsorted/IMG_5678.JPG'
-iSort=ImageSort()
-#Histogram stuff
-#histTest=iSort.getHisto()
-#clustersAssign=iSort.findKeyPhotos(histTest)
-#iSort.runTextRecogOnly()
-#output=iSort.runTextDetectAndRecog()
-#iSort.unsortImages(imgToFolder,fileNames)
+
+#Default run script:
 '''
+iSort=ImageSort()
+iSort.runDefault()
+'''
+#test script
+#testImagePath1='./unsorted/IMG_5662.JPG'
+#testImagePath2='./unsorted/IMG_5678.JPG'
+iSort=ImageSort()
 start=time.time()
 fileNames=iSort.getFileNames()
 histoAll=iSort.getHisto()
@@ -325,7 +325,15 @@ iSort.makeFolders(imgText)
 imgToFolder=iSort.folderMap(imgText)
 iSort.sortImages(imgToFolder,fileNames)
 end=time.time()
-'''
+execTime=end-start
+print('Execution time (s): ' + str(end-start))
+
+#Histogram stuff
+#histTest=iSort.getHisto()
+#clustersAssign=iSort.findKeyPhotos(histTest)
+#iSort.runTextRecogOnly()
+#output=iSort.runTextDetectAndRecog()
+#iSort.unsortImages(imgToFolder,fileNames)
 '''
 imText=iSort.readImage(testImagePath2)
 print(imText)
