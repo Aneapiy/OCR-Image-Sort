@@ -275,11 +275,40 @@ class ImageSort:
             cv2.destroyAllWindows()
             '''
         return histoAll
+
+    def getColorHisto(self):
+        histBins=20
+        fileNames=self.getFileNames()
+        histoAll=np.zeros((len(fileNames),histBins))
+        for i in range(len(fileNames)):
+            imgPath=self.folderPath+'/'+fileNames[i]
+            img=cv2.imread(imgPath,0)
+            hist=cv2.calcHist([img],[0],None,[histBins],[0,256])
+            histoAll[i]=hist.reshape(histBins)
+            #Histogram with image
+            #plt.subplot(121), plt.imshow(img,'gray')
+            #plt.subplot(122), plt.plot(hist)
+            #Histogram only
+            #plt.plot(hist)
+            '''
+            plt.hist(img.ravel(),256,[0,256])
+            plt.show()
+            '''
+            #Uncomment the 4 commands below to show the image with text detection boxes
+            '''
+            cv2.namedWindow('Grayscale',cv2.WINDOW_NORMAL)
+            cv2.imshow('Grayscale',img)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+            '''
+        return histoAll
     
     def findKeyPhotos(self, histo):
         #Use k-means clustering to group key photos together
         kmeans=KMeans(n_clusters=2,random_state=0).fit(histo)
         clusterAssign=kmeans.labels_
+        #Try DBSCAN
+        #Try Spectral Clustering
         return clusterAssign
     
     def runTextRecogOnly(self):
@@ -297,14 +326,21 @@ class ImageSort:
     def runDefault(self):
         start=time.time()
         fileNames=self.getFileNames()
+        print('Gathering histogram data...')
         histoAll=self.getHisto()
+        print('Histogram Extraction Complete')
+        print('Clustering...')
         clusterAssign=self.findKeyPhotos(histoAll)
+        print('K-Means Clustering Complete')
+        print('Begin text detection and OCR...')
         imgText=self.textDetectAndRecogAll(clusterAssign)
+        print('Sorting Complete')
         self.makeFolders(imgText)
         imgToFolder=self.folderMap(imgText)
         self.sortImages(imgToFolder,fileNames)
         end=time.time()
         #print(imgText)
+        print('OCR Image Sort Complete')
         print('Execution time (s): ' + str(end-start))
         return
 

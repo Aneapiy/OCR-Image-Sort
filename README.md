@@ -15,9 +15,9 @@ Python functions then use the output from Tesseract to create folders on disk an
 - [x] Text recognition using OpenCV.
 - [x] Image cropping and passing to Tesseract.
 - [x] Basic Tesseract error handling.
-- [ ] Evaluate algorithm on medium sized dataset and adjust parameters
-- [ ] Evaluate algorithm on full complex image dataset.
-- [ ] Refine key photo identification and key photo likelihood.
+- [x] Evaluate algorithm on medium sized dataset and adjust parameters
+- [x] Evaluate algorithm on full complex image dataset.
+- [x] Refine key photo identification and key photo likelihood.
 - [ ] Build a GUI interface.
 
 ## OCR-Image-Sort Overview
@@ -54,7 +54,7 @@ Initialize the class with
 > iSort=ImageSort()
 
 To run the code with text detection + OCR (recommended), run the following command in the Python terminal after initializing the class:
-> iSort.runTextDetectAndRecog()
+> iSort.runDefault()
 
 To run the code with OCR only (not recommended), run the following command in the Python terminal after initializing the class:
 > iSort.runTextRecogOnly()
@@ -113,6 +113,7 @@ Travelers could use this system to sort photos of cities, towns, and tourist att
 6. EAST Text Detection model: https://www.dropbox.com/s/r2ingd0l3zt8hxs/frozen_east_text_detection.tar.gz?dl=1
 7. https://github.com/argman/EAST
 8. https://github.com/UB-Mannheim/tesseract/wiki
+9. https://scikit-learn.org/stable/modules/clustering.html#k-means
 
 ### References:
 1. V. Singh Chandel and S. Mallick, "Deep Learning based Text Recognition (OCR) using Tesseract and OpenCV," ed. https://www.learnopencv.com/deep-learning-based-text-recognition-ocr-using-tesseract-and-opencv/
@@ -123,10 +124,11 @@ Travelers could use this system to sort photos of cities, towns, and tourist att
 6. The OpenCV Library. (2000). Accessed: February 28, 2019. [Online]. Available: https://opencv.org/
 7. https://github.com/madmaze/pytesseract
 8. M. Abadi et al., "TensorFlow: Large-scale machine learning on heterogeneous systems," ed, 2015.
+9. F. Pedregosa et al., "Scikit-learn: Machine learning in Python," Journal of machine learning research, vol. 12, no. Oct, pp. 2825-2830, 2011.
 
 ### Other threads consulted:
 1. The OpenCV Library. (2000). Accessed: February 28, 2019. [Online]. Available: https://opencv.org/
-2. F. Pedregosa et al., "Scikit-learn: Machine learning in Python," Journal of machine learning research, vol. 12, no. Oct, pp. 2825-2830, 2011.
+2. https://scikit-learn.org/stable/auto_examples/cluster/plot_kmeans_assumptions.html#sphx-glr-auto-examples-cluster-plot-kmeans-assumptions-py
 3. M. Abadi et al., "TensorFlow: Large-scale machine learning on heterogeneous systems," ed, 2015.
 4. Caffe: Convolutional Architecture for Fast Feature Embedding. (2014). [Online]. Available: http://caffe.berkeleyvision.org/
 5. A. Paszke et al., "Automatic differentiation in pytorch," 2017.
