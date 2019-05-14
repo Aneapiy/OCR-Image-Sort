@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 OCR-Image-Sort
-Image Sorting and Classification via Text Detection and Recognition
+Image Sorting and Classification via Clustering, Text Detection, and Text Recognition
 Created by Nond on April 13, 2019
 """
 import cv2

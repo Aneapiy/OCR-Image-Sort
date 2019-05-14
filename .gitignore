@@ -15,6 +15,7 @@ smallTestImages/not_used/
 demoDataset/
 input/
 output/
+trials/
 
 # Distribution / packaging
 .Python
