@@ -1,11 +1,8 @@
 # OCR-Image-Sort
-This code is in its infancy! Things will break! Good luck, have fun!
+Image Sorting and Classification via Clustering, Text Detection, and Text Recognition
 
 ## Abstract
-OCR-Image-Sort automatically sorts images into folders by using text detection and text recognition to extract descriptors from key images. 
-The input dataset must be a sequence of images where an image containing the text descriptor for a subset of images precedes the subset in the overall sequence. 
-The system uses the EAST deep learning CNN model and OpenCV to detect text regions in key images and passes these text regions to Tesseract’s LSTM deep learning engine for text recognition. 
-Python functions then use the output from Tesseract to create folders on disk and moves the images into the appropriate folder. 
+In this paper, I propose a system for automatically sorting images into folders by using text detection and text recognition to extract descriptors from key images. The input dataset must be a sequence of images where an image containing the text descriptor for a subset of images precedes the subset in the overall sequence. The system uses k-Means clustering on grayscale image histogram data to filter potential key images from the dataset. Potential key images are then passed into the EAST deep learning CNN model and OpenCV to detect text regions in key images. These text regions then go through Tesseract’s LSTM deep learning engine for text recognition. Afterwards, Python wrappers use the output from Tesseract to create folders on disk and move images into the appropriate folders. The OCR Image Sort system has been evaluated on a 3.9 GB dataset of 1433 images taken in North American refineries resulting in a precision of 83.1% and recall of 90.2%. Of the correct true positive key images, 81.1% had perfect text recognition and 18.9% had text recognition errors.
 
 ## Progress
 - [x] Load and read text off of one image using tesseract.
@@ -21,15 +18,9 @@ Python functions then use the output from Tesseract to create folders on disk an
 - [ ] Build a GUI interface.
 
 ## OCR-Image-Sort Overview
-The proposed system process a sequential set of images and identify key photos. 
-A key photo is a photo that contains the tag or nameplate of an equipment and is the first photo in a photo set of that equipment. 
-The system is built to run on a personal desktop or laptop computer, but not on a mobile platform such as a phone or camera. 
-The system will sort all the photos associated with the key photo into a single folder (see figure 1 below).
+The proposed system processes a sequential set of equipment images and identifies key images. A key image is a photo that contains the tag or nameplate of an equipment and is the first photo in a photo set of that equipment. In the above example, key photos are p_1^1,p_1^2,and p_1^3. The system is built to run on a personal desktop or laptop computer, but not on a mobile platform such as a phone or camera. The system will sort all the photos associated with the key photo into a single folder.
 
-The system is based on four main technologies: Python3, OpenCV [6], the EAST model [5], and Tesseract [4]. 
-Python3 is the general wrapper for all system components and interacts with the operating system to create folders and move image files around. 
-Text detection is done by OpenCV with the EAST model. 
-After OpenCV identifies the text regions, Tesseract does the text recognition and outputs a string back to Python3. 
+The system is based on six main technologies: Python 3 [9], Tesseract [4], the EAST model [5], OpenCV [6], PyTesseract[7], and scikit-Learn [8]. Python3 is the general wrapper for all system components and interacts with the operating system to create folders and move image files around. Image filtering to identify key images is done via scikit-learn’s k-Means clustering algorithm. Text detection is done by OpenCV with the EAST model. After OpenCV identifies the text regions, Tesseract does the text recognition and outputs a string back to Python3. PyTesseract provides a Python wrapper for Tesseract.
 
 ## Package Installation
 1. Install tesseract for windows from https://github.com/UB-Mannheim/tesseract/wiki
@@ -46,46 +37,45 @@ conda install tensorflow-gpu
 ```
 
 ## Code Execution Instructions
+### Running the program from a Terminal:
+Create a folder called ./input/ and another folder called ./output/ in the same directory as the code. Make sure the folder paths in the ImageSort class initialization for the input and output folders point to the correct location. Check that the location of the EAST model is correct.
+To run the program from the terminal, make sure that the terminal directory as the folder where imagesort.py, the EAST model, and the input and output folders are located. Run the program using:
 
-Make sure the folder paths for the unsorted and sorted folders point to the correct location. 
-Put all images in the ./unsorted/ folder.
-Check that the location of the EAST model is correct.
-Initialize the class with
+> python imagesort.py
+
+No additional inputs or options are required.
+
+### Running the program from a Python 3 console for OCR only mode:
+First, comment out the default run script at the bottom of the imagesort.py file. Run imagesort.py to load in the code. Initialize the class with.
 > iSort=ImageSort()
-
 To run the code with text detection + OCR (recommended), run the following command in the Python terminal after initializing the class:
 > iSort.runDefault()
 
 To run the code with OCR only (not recommended), run the following command in the Python terminal after initializing the class:
-> iSort.runTextRecogOnly()
 
-All the images should end up in the ./sorted/ folder under subfolders named after descriptors from key images.
+> iSort.runTextRecogOnly()
 
 ## Notes
 
 ### Code Overview
-Everything is contained in one class called ImageSort. 
-The location of the EAST model, the unsorted photos folder path, and the sorted photos folder path is initialized with the class. 
-The EAST model is also loaded into memory during class initialization.
+The software is contained in one class called ImageSort. The location of the EAST model, the unsorted photos folder path, and the sorted photos folder path is initialized with the class. The EAST model is also loaded into memory during class initialization.
+The ImageSort class has two main execution modes: text detection with OCR mode and an OCR only mode. The text detection with OCR mode is the default and recommended execution mode as this mode is faster and produces more accurate results. This mode uses OpenCV to extract a greyscale image histogram of each image, scikit-learn’s k-Means clustering algorithm to identify potential key images based on the histogram of each image, OpenCV and the EAST model to detect text regions in images, and then passes the text regions to Tesseract for recognition. The OCR only mode passes the entirety of all images to Tesseract. This mode is slower as tesseract has to process the entire image instead of just the text region and may also produce more false positive key image identifications.
 
 #### Text Detection with OCR mode:
-The main function for the text detection with OCR mode is runTextDetectAndRecog(). 
-This function first starts the execution timer then calls getFileNames() which scans the ./unsorted/ folder and returns a list of all the image filenames in that folder. 
-The list of filenames then gets passed to textDetectAndRecogAll() which loops through each file and calls the textDetection function. The textDetection function uses the EAST model to identify regions of text within the image and then passes these text regions into Tesseract for text recognition. 
-The text output from Tesseract gets appended to a list of all text within that image and the longest string of text is returned as the most likely label for that possible key image. This list of key image text is then used by the makeFolders function to create folders in the /sorted/ folder named after each key image text. 
-The folderMap function takes the key image text list and maps where each image in the /unsorted/ folder should go based on which key image precedes each regular image. 
-The sortImages function uses this map to move all of the images from the /unsorted/ folder into the appropriate subfolder in /sorted/.
+The main function for the text detection with OCR mode is runDefault().
+This function first starts the execution timer then calls getFileNames() which scans the folder ./input/ and returns a list of all the image filenames in that folder. Next, the function calls getHisto() which uses OpenCV to produce a an array containing greyscale image histograms of all images (see Fig. 3). The histogram contains 20 bins with each pixel value ranging from 0 to 256. These parameters were determined experimentally. The array of histograms is passed into the findKeyPhotos() function which fits a k-Means clustering algorithm with 2 clusters to the histogram data. Each bin in the histogram data is considered a feature in the k-Means clustering algorithm. The function returns the cluster assignments of each image.
+Under the assumption that there are less key images than non-key images in the dataset, the function textDetectAndRecogAll() loops through all image files in the smaller cluster and calls the textDetection function. The textDetection function uses the EAST model to identify regions of text within the image and then passes these text regions into Tesseract for text recognition.
+The text output from Tesseract gets appended to a list of all text strings within that image and the longest string of text is returned as the most likely label for that potential key image. This list of key image text is then used by the makeFolders function to create folders in the ./output/ folder named after each key image text. The folderMap function takes the key image text list and maps where each image in the ./intput/ folder should go in the ./output/ folder based on which key image precedes each regular image. The sortImages function uses this map to move all of the images from the ./input/ folder into the appropriate subfolder in ./output/ 
 
 #### OCR only mode:
-The main function for the OCR only mode is runTextRecogOnly(). 
-This function is similar to the main function for the text detection with OCR mode except for the function creates the list of key image text using readAllUnsorted() instead of textDetectandRecogAll(). 
-In readAllUnsorted(), the function loops through all the images and calls Tesseract on the full image instead of on small text detection regions. 
-After the key image text list is created, the program runs through the same functions as above to create folders and move image files.
+The main function for the OCR only mode is runTextRecogOnly(). This function is similar to the main function for the text detection with OCR mode except for the function creates the list of key image text using readAllUnsorted() instead of textDetectandRecogAll(). In readAllUnsorted(), the function loops through all the images and calls Tesseract on the full image instead of on small cropped images passed from a text detector. After the key image text list is created, the program runs through the same functions as above to create folders and move image files.
 
 ### Preliminary Evaluation
-I used Python’s native time.time() method to test the execution time of both run modes. Note that the time it takes to load the EAST model into memory is not included in these measurements since the model is loaded into memory when the class object is created and not reloaded each time the script is executed. The small scale test with 6 images (2 key images and 4 regular images) resulted in the following execution times:
-- OCR only execution mode: 17.49 sec  = 2.915 sec/image
-- Text detection + OCR execution mode: 2.87 sec = 0.478 sec/image
+I used Python’s native time.time() method to test the execution time. Note that the time it takes to load the EAST model into memory is not included in these measurements since the model is loaded into memory when the class object is created and not reloaded each time the script is executed.
+
+For the full system evaluation, I used the OCR Image Sort system to sort a 3.9 GB dataset of 1433 images of over 100 different pieces of equipment (sensors, control valves, piping, enclosures, etc) taken in North American refineries and compared the system’s automatic sort to a manual sort conducted by a subject matter expert. Each image has a resolution of 4608 by 3456 pixels, is stored in JPEG format, and ranges from 1.5MB to 4.3MB in size. The system sorted 1433 images in 327.984 seconds (0.229 seconds per image). The results are in Table 1 below.
+
+The system yielded a precision of 83.1% with a recall of 90.2%. Of the 74 correct key image identifications, 60 images (81.1%) had perfect text recognition and 14 images (18.9%) had text recognition errors. These results are a significant improvement over the prototype system. The prototype system had a precision of < 50% and a recall of ~75%. The prototype also took 0.478 seconds per image to process images at a lower resolution.
 
 The prototype was tested on a personal computer with the following specifications:
 - OS: Windows 7 Service Pack 1 64-bit 
@@ -99,16 +89,13 @@ The prototype was tested on a personal computer with the following specification
 During the test, the computer was air cooled and not overclocked. The ambient temperature of the testing room was approximately 70-72°F.
 
 ### Possible Applications
-This system could be used for other applications that involve segregating a sequence of images by key images in the sequence. 
-School yearbook photographers that take photos of students where the first photo of each student is the student holding a name card could use this system to automatically sort and label photos from the shoot.
-Car dealerships could use this system to automatically sort photos of taken of incoming car inventory.
-Travelers could use this system to sort photos of cities, towns, and tourist attractions that they visit based on photos of different signage.
+This system could also be used for other applications outside of refinery image sorting that involve segregating a sequence of images by key images in the sequence. School yearbook photographers that take photos of students where the first photo of each student is the student holding a name card could use this system to automatically sort and label photos from the shoot. Car dealerships could use this system to automatically sort photos of taken of incoming car inventory. Travelers could use this system to sort photos of cities, towns, and tourist attractions that they visit based on photos of different signage.
 
 ### Main APIs and Software Packages:
 1. https://github.com/opencv/opencv
 2. https://github.com/tesseract-ocr/tesseract
 3. https://github.com/madmaze/pytesseract
-4. Python 3.6.2 |Anaconda custom (64-bit)| via https://www.anaconda.com/
+4. Python 3.7.3 |Anaconda custom (64-bit)| via https://www.anaconda.com/
 5. Spyder IDE: https://www.spyder-ide.org/
 6. EAST Text Detection model: https://www.dropbox.com/s/r2ingd0l3zt8hxs/frozen_east_text_detection.tar.gz?dl=1
 7. https://github.com/argman/EAST
