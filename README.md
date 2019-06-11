@@ -2,7 +2,9 @@
 Image Sorting and Classification via Clustering, Text Detection, and Text Recognition
 
 ## Abstract
-In this paper, I propose a system for automatically sorting images into folders by using text detection and text recognition to extract descriptors from key images. The input dataset must be a sequence of images where an image containing the text descriptor for a subset of images precedes the subset in the overall sequence. The system uses k-Means clustering on grayscale image histogram data to filter potential key images from the dataset. Potential key images are then passed into the EAST deep learning CNN model and OpenCV to detect text regions in key images. These text regions then go through Tesseract’s LSTM deep learning engine for text recognition. Afterwards, Python wrappers use the output from Tesseract to create folders on disk and move images into the appropriate folders. The OCR Image Sort system has been evaluated on a 3.9 GB dataset of 1433 images taken in North American refineries resulting in a precision of 83.1% and recall of 90.2%. Of the correct true positive key images, 81.1% had perfect text recognition and 18.9% had text recognition errors.
+OCR-Image-Sort automatically sorts images into folders by using text detection and text recognition to extract descriptors from key images. The input dataset must be a sequence of images where an image containing the text descriptor for a subset of images precedes the subset in the overall sequence. The system uses k-Means clustering on grayscale image histogram data to filter potential key images from the dataset. Potential key images are then passed into the EAST deep learning CNN model and OpenCV to detect text regions in key images. These text regions then go through Tesseract’s LSTM deep learning engine for text recognition. Afterwards, Python wrappers use the output from Tesseract to create folders on disk and move images into the appropriate folders. The OCR Image Sort system has been evaluated on a 3.9 GB dataset of 1433 images taken in North American refineries resulting in a precision of 83.1% and recall of 90.2%. Of the correct true positive key images, 81.1% had perfect text recognition and 18.9% had text recognition errors.
+
+Check out [OCRImageSortV0_technicalReport.pdf](https://github.com/Aneapiy/OCR-Image-Sort/blob/master/OCRImageSortV0_technicalReport.pdf) for a detailed explanation of this project.
 
 ## Progress
 - [x] Load and read text off of one image using tesseract.
@@ -22,11 +24,20 @@ The proposed system processes a sequential set of equipment images and identifie
 
 The system is based on six main technologies: Python 3 [9], Tesseract [4], the EAST model [5], OpenCV [6], PyTesseract[7], and scikit-Learn [8]. Python3 is the general wrapper for all system components and interacts with the operating system to create folders and move image files around. Image filtering to identify key images is done via scikit-learn’s k-Means clustering algorithm. Text detection is done by OpenCV with the EAST model. After OpenCV identifies the text regions, Tesseract does the text recognition and outputs a string back to Python3. PyTesseract provides a Python wrapper for Tesseract.
 
+## Limitations on the Image Dataset
+
+The images in the dataset are limited to in-focus photos taken with ample lighting such that any relevant text in the photo can be easily read by a person viewing the image on a 24inch 1080p TN panel computer monitor. The images are stored in JPEG (PNG works too) with a resolution of approximately 4608 pixels by 3456 pixels. Depending on the content of the image, the size of these images may range from approximately 1.5MB to 4.3MB.
+
+In order to increase the success rate of key image identification and successful optical character recognition, the content of key images and non-key images is limited. Key images must contain a single label in black text on white background. The label area is centered in the middle of the image, right side up, in focus, and in the same plane as the camera. Note that the label must be printed using a common font and cannot be handwritten. The version of Tesseract used in this program was only trained on printed text and was not trained to recognize handwritten alphanumeric characters. In order to avoid false-positive key photo classification non-key images may contain text, but the text must not be prominent and not centered, occupy less than 10% of the image, or have different colored lettering on different colored background.
+
+The images in the large evaluation dataset (1433 images of equipment in North American refineries) were captured using a FujiFilm FinePix XP140 camera at full resolution. These images have a resolution of 4608 by 3456 pixels and are stored in JPEG format.
+
 ## Package Installation
-1. Install tesseract for windows from https://github.com/UB-Mannheim/tesseract/wiki
-2. Add tesseract to PATH variable for windows (https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/)
+1. Install Tesseract for windows from https://github.com/UB-Mannheim/tesseract/wiki
+2. Add Tesseract to PATH variable for windows (https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/)
 3. Install the latest version of Anaconda
 4. Open Anaconda Prompt and install the following packages
+
 ```
 conda install pip
 pip install tesseract
@@ -47,8 +58,11 @@ No additional inputs or options are required.
 
 ### Running the program from a Python 3 console for OCR only mode:
 First, comment out the default run script at the bottom of the imagesort.py file. Run imagesort.py to load in the code. Initialize the class with.
+
 > iSort=ImageSort()
+
 To run the code with text detection + OCR (recommended), run the following command in the Python terminal after initializing the class:
+
 > iSort.runDefault()
 
 To run the code with OCR only (not recommended), run the following command in the Python terminal after initializing the class:
@@ -70,14 +84,14 @@ The text output from Tesseract gets appended to a list of all text strings withi
 #### OCR only mode:
 The main function for the OCR only mode is runTextRecogOnly(). This function is similar to the main function for the text detection with OCR mode except for the function creates the list of key image text using readAllUnsorted() instead of textDetectandRecogAll(). In readAllUnsorted(), the function loops through all the images and calls Tesseract on the full image instead of on small cropped images passed from a text detector. After the key image text list is created, the program runs through the same functions as above to create folders and move image files.
 
-### Preliminary Evaluation
-I used Python’s native time.time() method to test the execution time. Note that the time it takes to load the EAST model into memory is not included in these measurements since the model is loaded into memory when the class object is created and not reloaded each time the script is executed.
-
-For the full system evaluation, I used the OCR Image Sort system to sort a 3.9 GB dataset of 1433 images of over 100 different pieces of equipment (sensors, control valves, piping, enclosures, etc) taken in North American refineries and compared the system’s automatic sort to a manual sort conducted by a subject matter expert. Each image has a resolution of 4608 by 3456 pixels, is stored in JPEG format, and ranges from 1.5MB to 4.3MB in size. The system sorted 1433 images in 327.984 seconds (0.229 seconds per image). The results are in Table 1 below.
+### System Evaluation Results
+For the full system evaluation, I used the OCR Image Sort system to sort a 3.9 GB dataset of 1433 images of over 100 different pieces of equipment (sensors, control valves, piping, enclosures, etc) taken in North American refineries and compared the system’s automatic sort to a manual sort conducted by a subject matter expert. Each image has a resolution of 4608 by 3456 pixels, is stored in JPEG format, and ranges from 1.5MB to 4.3MB in size. The system sorted 1433 images in 327.984 seconds (0.229 seconds per image).
 
 The system yielded a precision of 83.1% with a recall of 90.2%. Of the 74 correct key image identifications, 60 images (81.1%) had perfect text recognition and 14 images (18.9%) had text recognition errors. These results are a significant improvement over the prototype system. The prototype system had a precision of < 50% and a recall of ~75%. The prototype also took 0.478 seconds per image to process images at a lower resolution.
 
-The prototype was tested on a personal computer with the following specifications:
+The large increase in both precision and recall comes from the addition of image histogram k-Means clustering before text detection and recognition. The clustering step filters key images from the dataset much more precisely than the prototype’s simple heuristics on the number of text bonding boxes detected. Extracting image histogram data and performing k-Means clustering on the entire dataset is also much faster than performing text detection on the entire dataset.
+
+The system was evaluated on a personal computer with the following specifications:
 - OS: Windows 7 Service Pack 1 64-bit 
 - CPU: Intel Core i5-4690K 3.50 GHz Quad Core
 - GPU: Nvidia GeForce GTX 1080
@@ -86,7 +100,7 @@ The prototype was tested on a personal computer with the following specification
 - Program Drive: Toshiba SSD OCZ Trion 150 
 - Motherboard: MSI Z97 Gaming 5
 
-During the test, the computer was air cooled and not overclocked. The ambient temperature of the testing room was approximately 70-72°F.
+During the test, the computer was air cooled and not overclocked. The ambient temperature of the testing room was approximately 70-72°F. I used Python’s native time.time() method to test the execution time. Note that the time it takes to load the EAST model into memory is not included in these measurements since the model is loaded into memory when the class object is created and not reloaded each time the script is executed.
 
 ### Possible Applications
 This system could also be used for other applications outside of refinery image sorting that involve segregating a sequence of images by key images in the sequence. School yearbook photographers that take photos of students where the first photo of each student is the student holding a name card could use this system to automatically sort and label photos from the shoot. Car dealerships could use this system to automatically sort photos of taken of incoming car inventory. Travelers could use this system to sort photos of cities, towns, and tourist attractions that they visit based on photos of different signage.
