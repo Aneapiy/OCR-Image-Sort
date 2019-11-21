@@ -20,7 +20,7 @@ Check out [OCRImageSortV0_technicalReport.pdf](https://github.com/Aneapiy/OCR-Im
 - [ ] Build a GUI interface.
 
 ## OCR-Image-Sort Overview
-The proposed system processes a sequential set of equipment images and identifies key images. A key image is a photo that contains the tag or nameplate of an equipment and is the first photo in a photo set of that equipment. In the above example, key photos are p_1^1,p_1^2,and p_1^3. The system is built to run on a personal desktop or laptop computer, but not on a mobile platform such as a phone or camera. The system will sort all the photos associated with the key photo into a single folder.
+The proposed system processes a sequential set of equipment images and identifies key images. A key image is a photo that contains the tag or nameplate of an equipment and is the first photo in a photo set of that equipment. The system is built to run on a personal desktop or laptop computer, but not on a mobile platform such as a phone or camera. The system will sort all the photos associated with the key photo into a single folder.
 
 The system is based on six main technologies: Python 3 [9], Tesseract [4], the EAST model [5], OpenCV [6], PyTesseract[7], and scikit-Learn [8]. Python3 is the general wrapper for all system components and interacts with the operating system to create folders and move image files around. Image filtering to identify key images is done via scikit-learn’s k-Means clustering algorithm. Text detection is done by OpenCV with the EAST model. After OpenCV identifies the text regions, Tesseract does the text recognition and outputs a string back to Python3. PyTesseract provides a Python wrapper for Tesseract.
 
